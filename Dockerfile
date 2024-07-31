@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     && cd pgvector-0.7.3 \
     && make CFLAGS="-mtune=generic" && make install \
     && cd .. && rm -rf pgvector-0.7.3 v0.7.3.tar.gz \
+    && apt-get remove -y --purge build-essential wget \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
