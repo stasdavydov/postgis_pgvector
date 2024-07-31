@@ -1,26 +1,28 @@
-# Use the PostGIS image as the base
-FROM postgis/postgis:15-3.4
+# Use the official PostgreSQL image based on Debian
+FROM postgres:15
 
-ARG PGVECTOR_VERSION=v0.7.3
+# Install necessary dependencies and extensions
+RUN apt-get update && apt-get install -y \
+    postgresql-15-postgis-3 \
+    postgresql-15-postgis-3-scripts \
+    postgresql-server-dev-15 \
+    build-essential \
+    wget \
+    && wget https://github.com/pgvector/pgvector/archive/refs/tags/v0.5.0.tar.gz \
+    && tar -xzvf v0.5.0.tar.gz \
+    && cd pgvector-0.5.0 \
+    && make && make install \
+    && cd .. && rm -rf pgvector-0.5.0 v0.5.0.tar.gz \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install necessary packages
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-       build-essential \
-       libpq-dev \
-       wget \
-       git \
-       postgresql-server-dev-15 \
-    # Clean up to reduce layer size
-    && rm -rf /var/lib/apt/lists/* \
-    && git clone --branch $PGVECTOR_VERSION https://github.com/pgvector/pgvector.git /tmp/pgvector \
-    && cd /tmp/pgvector \
-    && make \
-    && make install \
-    # Clean up unnecessary files
-    && cd - \
-    && apt-get purge -y --auto-remove build-essential postgresql-server-dev-15 libpq-dev wget git \
-    && rm -rf /tmp/pgvector
+# Add a custom initialization script for the extensions
+COPY ./initdb-postgis-pgvector.sh /docker-entrypoint-initdb.d/
 
-# Copy initialization scripts
-COPY ./docker-entrypoint-initdb.d/ /docker-entrypoint-initdb.d/
+# Set the default database and user
+ENV POSTGRES_DB=mydb
+ENV POSTGRES_USER=myuser
+ENV POSTGRES_PASSWORD=mypassword
+
+# Expose the PostgreSQL port
+EXPOSE 5432
