@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '0 0 * * 0' # This will run the action every Sunday at midnight (00:00 UTC)
 
 jobs:
   build:
@@ -44,8 +46,6 @@ jobs:
           us-central1-docker.pkg.dev/licensecorporation-dev/lcorp-docker0/postgis-pgvector
           docker.io/${{ secrets.DOCKERHUB_USERNAME }}/postgis-pgvector
         tags: |
-          type=sha
-          type=schedule
           type=ref,event=branch
           type=ref,event=pr
           type=semver,pattern={{version}}
