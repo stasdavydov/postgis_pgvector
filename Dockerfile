@@ -8,11 +8,11 @@ RUN apt-get update && apt-get install -y \
     postgresql-server-dev-15 \
     build-essential \
     wget \
-    && wget https://github.com/pgvector/pgvector/archive/refs/tags/v0.5.0.tar.gz \
-    && tar -xzvf v0.5.0.tar.gz \
-    && cd pgvector-0.5.0 \
+    && wget https://github.com/pgvector/pgvector/archive/refs/tags/v0.7.3.tar.gz \
+    && tar -xzvf v0.7.3.tar.gz \
+    && cd pgvector-0.7.3 \
     && make && make install \
-    && cd .. && rm -rf pgvector-0.5.0 v0.5.0.tar.gz \
+    && cd .. && rm -rf pgvector-0.7.3 v0.7.3.tar.gz \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
