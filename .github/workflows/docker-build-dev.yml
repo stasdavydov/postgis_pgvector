@@ -43,7 +43,6 @@ jobs:
       uses: docker/metadata-action@v5
       with:
         images: |
-          us-central1-docker.pkg.dev/licensecorporation-dev/lcorp-docker0/postgis-pgvector
           docker.io/${{ secrets.DOCKERHUB_USERNAME }}/postgis-pgvector
         tags: |
           type=ref,event=branch
