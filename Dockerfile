@@ -1,19 +1,18 @@
 # Use the official PostgreSQL image based on Debian
-FROM postgres:15
+FROM postgis/postgis:16-3.4
 
 # Install necessary dependencies and extensions
-RUN apt-get update && apt-get install -y \
-    postgresql-15-postgis-3 \
-    postgresql-15-postgis-3-scripts \
-    postgresql-server-dev-15 \
-    build-essential \
-    wget \
-    && wget https://github.com/pgvector/pgvector/archive/refs/tags/v0.7.3.tar.gz \
-    && tar -xzvf v0.7.3.tar.gz \
-    && cd pgvector-0.7.3 \
+RUN echo "deb [trusted=yes] http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-15 main" | tee /etc/apt/sources.list.d/llvm.list && \
+    apt-get update && \
+    apt-get install -y clang-15 make wget gcc postgresql-server-dev-16 build-essential && \
+    ln -s /usr/bin/clang-15 /usr/bin/clang && \
+    rm -rf /var/lib/apt/lists/* && \
+    wget https://github.com/pgvector/pgvector/archive/refs/tags/v0.7.4.tar.gz \
+    && tar -xzvf v0.7.4.tar.gz \
+    && cd pgvector-0.7.4 \
     && make CFLAGS="-mtune=generic" && make install \
-    && cd .. && rm -rf pgvector-0.7.3 v0.7.3.tar.gz \
-    && apt-get remove -y --purge build-essential wget \
+    && cd .. && rm -rf pgvector-0.7.4 v0.7.4.tar.gz \
+    && apt-get remove -y --purge build-essential wget gcc clang-15 make \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
