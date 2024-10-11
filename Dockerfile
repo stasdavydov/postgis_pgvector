@@ -1,4 +1,4 @@
-# Use the official PostgreSQL image based on Debian
+# Use the official PostGIS image based on Debian
 FROM postgis/postgis:16-3.4
 
 # Install necessary dependencies and extensions
@@ -12,7 +12,7 @@ RUN echo "deb [trusted=yes] http://apt.llvm.org/bullseye/ llvm-toolchain-bullsey
     && cd pgvector-0.7.4 \
     && make CFLAGS="-mtune=generic" && make install \
     && cd .. && rm -rf pgvector-0.7.4 v0.7.4.tar.gz \
-    && apt-get remove -y --purge build-essential wget gcc clang-15 make \
+    && apt-get remove -y --purge clang-15 make wget gcc build-essential \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -20,9 +20,9 @@ RUN echo "deb [trusted=yes] http://apt.llvm.org/bullseye/ llvm-toolchain-bullsey
 COPY ./initdb-postgis-pgvector.sh /docker-entrypoint-initdb.d/
 
 # Set the default database and user
-ENV POSTGRES_DB=mydb
-ENV POSTGRES_USER=myuser
-ENV POSTGRES_PASSWORD=mypassword
+ENV POSTGRES_DB=test
+ENV POSTGRES_USER=test
+ENV POSTGRES_PASSWORD=test
 
 # Expose the PostgreSQL port
 EXPOSE 5432
