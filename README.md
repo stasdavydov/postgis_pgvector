@@ -21,7 +21,7 @@ This project focuses on creating a Docker image that combines the functionalitie
 
 
 ### Dockerfile
-The `Dockerfile` starts with the `postgis/postgis:13-3.4` image and installs essential packages including build tools, PostgreSQL server development tools, and `git`. It then clones and installs pgvector. The Dockerfile is optimized to reduce the layer size by cleaning up after installations.
+The `Dockerfile` starts with the `postgis/postgis:16-3.4` image and installs essential packages including build tools, PostgreSQL server development tools, and `git`. It then clones and installs pgvector. The Dockerfile is optimized to reduce the layer size by cleaning up after installations.
 
 ### docker-compose.yml
 `docker-compose.yml` sets up two services:
