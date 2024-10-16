@@ -21,7 +21,7 @@ RUN if [ "$TARGETARCH" = "arm64" ]; then \
     # Clean up unnecessary files
     && cd - \
     && apt-get purge -y --auto-remove build-essential postgresql-server-dev-16 libpq-dev wget git \
-    && rm -rf /tmp/pgvector \
+    && rm -rf /tmp/pgvector; \
     else \
     echo "deb [trusted=yes] http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-15 main" | tee /etc/apt/sources.list.d/llvm.list && \
     apt-get update && \
@@ -35,7 +35,7 @@ RUN if [ "$TARGETARCH" = "arm64" ]; then \
     && cd .. && rm -rf pgvector-0.7.4 v0.7.4.tar.gz \
     && apt-get remove -y --purge clang-15 make wget gcc build-essential \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/lib/apt/lists/*; \
     fi
 
 # Add a custom initialization script for the extensions
