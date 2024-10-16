@@ -56,7 +56,7 @@ jobs:
     
     - name: Install Docker environment
       run: |
-        brew install docker
+        brew install docker colima
         colima start
 
     - name: Set Up Docker Builder
