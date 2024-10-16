@@ -53,6 +53,11 @@ jobs:
     steps:
     - name: Check Out Repository
       uses: actions/checkout@v4
+    
+    - name: Install Docker environment
+      run: |
+        brew install docker
+        colima start
 
     - name: Set Up Docker Builder
       uses: docker/setup-buildx-action@v3.5.0
