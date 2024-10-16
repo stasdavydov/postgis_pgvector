@@ -46,6 +46,8 @@ jobs:
           type=semver,pattern={{major}}
           type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
+    - uses: docker/setup-qemu-action@v3
+
     - name: Build and Push Backend Docker Image
       uses: docker/build-push-action@v6.5.0
       with:
