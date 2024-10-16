@@ -15,10 +15,6 @@ jobs:
       contents: 'read'
       id-token: 'write'
 
-    concurrency:
-      group: build
-      cancel-in-progress: true
-
     steps:
     - name: Check Out Repository
       uses: actions/checkout@v4
@@ -38,13 +34,6 @@ jobs:
       with:
         images: |
           docker.io/${{ secrets.DOCKERHUB_USERNAME }}/postgis-pgvector
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=semver,pattern={{major}}
-          type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
     - name: Build and Push Backend Docker Image
       uses: docker/build-push-action@v6.5.0
@@ -60,10 +49,6 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
-
-    concurrency:
-      group: build
-      cancel-in-progress: true
 
     steps:
     - name: Check Out Repository
@@ -84,13 +69,6 @@ jobs:
       with:
         images: |
           docker.io/${{ secrets.DOCKERHUB_USERNAME }}/postgis-pgvector-arm64
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=semver,pattern={{major}}
-          type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
     - name: Build and Push Backend Docker Image
       uses: docker/build-push-action@v6.5.0
